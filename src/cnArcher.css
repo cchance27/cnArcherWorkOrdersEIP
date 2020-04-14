@@ -125,6 +125,7 @@
 .customer-info .phone {
     width: 205px;
     height: 15px;
+    overflow: hidden;
     margin-bottom: 3px;
 }
 

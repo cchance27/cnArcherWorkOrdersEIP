@@ -13,6 +13,16 @@ return new QRious({
 
 //This is the content of our qrCode
 function qrContent(archerInfo, installDate, technician) {
+
+  let mainPhone = archerInfo.phone;
+  // Our phone field can have more than 1 entry seperated by commas, however the QR only accepts 1 phone number.
+  if (mainPhone.indexOf(',') > 0) {
+    mainPhone = mainPhone.split(',')[0];
+  };
+
+  // Phone numbers aren't allowed to include - in the qr code for cnArcher.
+  mainPhone = mainPhone.replace(/-/g, "");
+
   return `
   { 
     "type":"cnArcherWO",
@@ -20,7 +30,7 @@ function qrContent(archerInfo, installDate, technician) {
     "id": "${archerInfo.eip}",
     "name": "${archerInfo.name}",
     "address": "${archerInfo.address}",
-    "phone": "${archerInfo.phone}",
+    "phone": "${mainPhone}",
     "mode": "automated",
     "sm_name": "${archerInfo.name} (${archerInfo.eip})",
     "security": "aaa",

@@ -21,7 +21,7 @@ class cnArcherWorkorder extends HTMLElement {
             eip: this.getAttribute('eip'),
             accid: this.getAttribute('accid'),
             address: this.getAttribute('address').replace(/(?:\r\n|\r|\n)/g, ' ').replace(', Netherlands Antilles', ''),
-            phone: this.getAttribute('phone').replace(/-/g, ""),
+            phone: this.getAttribute('phone'),
             firmware: this.getAttribute('firmware')||'16.0.1',
             package: this.getAttribute('package'),
             company: this.getAttribute('company'),

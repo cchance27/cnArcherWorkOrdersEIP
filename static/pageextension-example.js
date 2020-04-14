@@ -11,7 +11,7 @@ cnJS.onload = function () {
   var cnCompany = document.querySelector("#DetailsContactCompany") != null ? document.querySelector("#DetailsContactCompany").innerText : '';
   var cnEIPAcc = document.querySelector("#DetailsParentName") != null ? document.querySelector("#DetailsParentName").innerText : document.querySelector("#CurrentUsername").innerText;
   var cnAccId = document.querySelector("#CurrentAccountID").innerText;
-  var cnPhone = document.querySelector("#DetailsPhone").getElementsByTagName("a")[0].innerText;
+  var cnPhone = Array.from(document.querySelectorAll("#DetailsPhone")).map(function (x) { return x.innerText; }).join(', ');
   var cnAddress = document.querySelector("#DetailsAddress").getElementsByTagName("a")[0].innerText;
   cnDevices.forEach(function (item) {
     if (item.outerHTML.includes('0a-00-3e')) {
