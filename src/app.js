@@ -8,10 +8,7 @@ class cnArcherWorkorder extends HTMLElement {
     constructor() {
         super();        
         // Technicians that will be populated into the tech drop down of the modal window.
-        this.techNames = [
-            "Andy", 
-            "Malcolm"
-        ];
+        this.techNames = this.getAttribute('techs').split(',');
 
         // Put all our attributes in a object we can pass around and access easily.
         // Some basic cleanup like removing netherlands antilles, and removing - from phone to be compatible with cnArcher import.
@@ -80,7 +77,7 @@ class cnArcherWorkorder extends HTMLElement {
         blank.disabled = true;
         blank.appendChild(document.createTextNode("Select..."));
         technician.appendChild(blank);
-
+        
         // Fill in the technicians in the option drop down from the techNames array.
         this.techNames.forEach(tech => {
             var tOpt = document.createElement("option", { value: tech });
