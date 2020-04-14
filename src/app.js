@@ -185,7 +185,7 @@ class cnArcherWorkorder extends HTMLElement {
                 ctx.font = 'bold 36px poppins';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                console.log(dt.value)
+                
                 ctx.fillText(dt.value, 300, 200)
 
                 // Add the cnArcher logo
