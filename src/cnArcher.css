@@ -151,7 +151,7 @@
     font-weight: 600;
 }
 
-.option-info input, select {
+input, select {
     font-size: 12px;
     width: 130px;
     height: 25px;
