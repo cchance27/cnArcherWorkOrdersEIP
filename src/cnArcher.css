@@ -1,0 +1,223 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;1,300&display=swap');
+
+* {
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;   
+}
+
+.cnArcher-show img {
+    width: 12px;
+    height: 12px;
+}
+
+.cnArcher-window {
+    position: absolute;
+    display: block;
+    background-color: rgba(22,22,22,0.4);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 97;
+}
+
+.cnArcher-preview{
+    background-image: url('img/cnArcher.png');
+    background-size: cover;
+    position: absolute;
+    top: -55px;
+    left: -278px;
+    width: 288px;
+    height: 572px;
+    z-index:99;
+    text-align: center;
+}
+
+.cnArcher-preview img {
+    margin-top: 50px;
+    height: 200px;
+    width: 200px;
+    z-index:100;
+}
+
+.cnArcher-block {
+    color: #707070;
+    background-color:#E9E9E9;
+    top: 50%;
+    left: 50%;
+    transform: translate(0, -50%);
+    position: fixed;
+    z-index: 98;
+    width: 245px;
+    height: 425px;
+    border-radius: 10px;
+    padding: 11px 11px 11px 21px;
+    box-shadow: 3px 3px 6px rgba(22,22,22,0.2);
+}
+
+.title {
+    color: #3D3D3D;
+    margin-left: -10px;
+    text-align: center;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 30px;
+}
+
+.title strong {
+    font-weight: 600;
+}
+
+.subtitle {
+    margin-left: -15px;
+    text-align: center;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+}
+
+.esn {
+    margin-top: 10px;
+    margin-bottom: 7px;
+    width: 210px;
+    display: flex;
+    font-size: 12px;
+    font-weight: 300;
+    font-style: italic;
+    text-align: center;
+    align-items: center; 
+}
+.esn::before, .esn::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #9B9B9B;
+}
+.esn::before {
+    margin-right: .75em;
+}
+.esn::after {
+    margin-left: .75em;
+}
+
+.customer-info {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+}
+
+.customer-info .name {
+    display: inline-block;
+    font-weight: 600;
+    width: 160px;
+    height: 15px;
+    overflow: hidden;
+}
+
+.customer-info .account {
+    display: inline-block;
+    overflow: hidden;
+    width: 45px;
+    height: 15px;
+}
+
+.customer-info .phone {
+    width: 205px;
+    height: 15px;
+    margin-bottom: 3px;
+}
+
+.customer-info .address {
+    overflow: hidden;
+    width: 205px;
+    height: 30px;
+}
+
+.option-info {
+    font-size: 12px;
+}
+
+.entry {
+    display: inline-block;
+    width: 80px;
+    font-weight: 600;
+}
+
+.entry-wide {
+    display: inline-block;
+    padding-top: 10px;
+    width: 210px;
+    font-weight: 600;
+}
+
+.option-info input, select {
+    font-size: 12px;
+    width: 130px;
+    height: 25px;
+    border: 0;
+    outline: 0;
+    margin-top: 4px;
+    border-radius: 8px;
+    text-align: right;
+    padding: 1px;
+    background: rgba(255,255,255,0.5);
+    box-shadow: 
+    0 1px 0 rgba(255,255,255,.15),
+    0 2px 4px rgba(0,0,0,.2),
+    0 0 12px rgba(255,255,255,.1)
+}
+
+.invalid {
+    border: 1px solid crimson;
+}
+
+.option-info textarea {
+    width: 212px;
+    height: 102px;
+    border: 0;
+    outline: 0;
+    border-radius: 10px;
+    margin-top: 3px;
+    font-size: 12px;
+    padding: 5px;
+    resize: none;
+    background: rgba(255,255,255,0.5);
+    box-shadow: 
+    0 1px 0 rgba(255,255,255,.15),
+    0 2px 4px rgba(0,0,0,.2),
+    0 0 12px rgba(255,255,255,.1)
+}
+
+.print-workorder {
+    position: absolute;
+    bottom: 20px;
+    left: 65px;
+    width: 115px;
+    height: 25px;
+    display: block;
+    text-align: center;
+    line-height: 25px;
+    border: 0px solid #26568C;
+    border-radius: 10px;
+    outline: none;
+    color: #206095;
+    background-color: #F9F9F9;
+    text-decoration: none;
+    font-size: 10px;
+    background: linear-gradient(145deg, #f9f9f9, #d2d2d2);
+    box-shadow:  4px 4px 8px #909090, 
+             -4px -4px 8px #ffffff;
+}
+
+.print-workorder:hover {
+    background: #E9E9E9;
+}
+
+.print-workorder:active {
+    background: linear-gradient(145deg, #d2d2d2, #f9f9f9);
+}
+
+.hide {
+    display: none;
+}
