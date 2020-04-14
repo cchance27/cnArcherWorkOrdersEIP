@@ -15,8 +15,3 @@ To deploy:
 - Test the extension by visiting a customer that has a package with a 0a-00-3e ESN. 
 
 The pageextension-example.js looks through the clients overview page, finds the various package noticeicons that are used for mouse over package data, it then appends a cn-workorder custom element next to that notice icon that is the trigger for the new web-component modal window for generating workorders.
-
-TODO: 
-- Migrate the fixed technicians to a span or some other more modifiable method
-- Possibility to add google calendar creation trigger
-- Possibility to trigger email to technician 
