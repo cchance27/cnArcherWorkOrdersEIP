@@ -6,7 +6,7 @@ cnJS.src = '/adminPortal/cnArcher/bundle.js'; // After our bundle has been loade
 cnJS.onload = function () {
   console.log('cnArcher Bundle Loaded...');
   var cnFirmware = "16.2.1";
-  var technicians = "Tech1,Tech2,Tech3";
+  var cnTechs = "Tech1,Tech2,Tech3";
   var cnDevices = [].slice.call(document.getElementsByClassName('noticeicon'));
   if (cnDevices.length > 0) {
     var cnName = document.querySelector("#DetailsContactName").innerText;
@@ -27,7 +27,7 @@ cnJS.onload = function () {
         var cnUser = match !== null ? match[1] : '';
         match = item.outerHTML.match(/VlanID = ([\d]{1,3})/);
         var cnVlan = match !== null ? match[1] : '';
-        item.insertAdjacentHTML("afterend", "<cn-workorder esn=\"".concat(cnEsn, "\" name=\"").concat(cnName, "\" techs=\"").concat(technicians, "\" company=\"").concat(cnCompany, "\" accid=\"").concat(cnAccId, "\" address=\"").concat(cnAddress, "\" eip=\"").concat(cnEIPAcc, "\" phone=\"").concat(cnPhone, "\" package=\"").concat(cnPackage, "\" firmware=\"").concat(cnFirmware, "\" username=\"").concat(cnUser, "\" password=\"").concat(cnPass, "\" vlan=\"").concat(cnVlan, "\"></cn-workorder>"));
+        item.insertAdjacentHTML("afterend", "<cn-workorder esn=\"".concat(cnEsn, "\" name=\"").concat(cnName, "\" techs=\"").concat(cnTechs, "\" company=\"").concat(cnCompany, "\" accid=\"").concat(cnAccId, "\" address=\"").concat(cnAddress, "\" eip=\"").concat(cnEIPAcc, "\" phone=\"").concat(cnPhone, "\" package=\"").concat(cnPackage, "\" firmware=\"").concat(cnFirmware, "\" username=\"").concat(cnUser, "\" password=\"").concat(cnPass, "\" vlan=\"").concat(cnVlan, "\"></cn-workorder>"));
       };
     });
   };
