@@ -12,6 +12,9 @@ To deploy:
 - In the EngageIP admin portal add a new page extension 
   - Page Setting: Set to overview/index to target customer overview pages only.
   - Content: Should be set to the static/pageextension.js sample.
+  - Update value in page extension.
+    - Firmware: should be the valid firmware the cnArcher will use for radios.
+    - Techs: should be a comma delimited list of technician names.
 - Test the extension by visiting a customer that has a package with a 0a-00-3e ESN. 
 
 The pageextension-example.js looks through the clients overview page, finds the various package noticeicons that are used for mouse over package data, it then appends a cn-workorder custom element next to that notice icon that is the trigger for the new web-component modal window for generating workorders.
