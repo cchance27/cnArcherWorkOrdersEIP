@@ -68,12 +68,16 @@ class cnArcherWorkorder extends HTMLElement {
         const printBtn = this.shadowRoot.querySelector('.print-workorder');
         const notes = this.shadowRoot.querySelector('#note');
         const dt = this.shadowRoot.querySelector('#dt');
+        const filters = this.shadowRoot.querySelector('#filters');
         const technician = this.shadowRoot.querySelector('#technician');
         const printContent = this.shadowRoot.querySelector('#cnArcherPrintArea');
         const previewImg = this.shadowRoot.querySelector('#previewImg');
 
         // create a local link to the archerInfo so that we don't have to 
         const archerInfo = this.archerInfo;
+
+        // Set our filter type based on if we're pppoe or not
+        isPPPoE(archerInfo) ? setDropDownToValue(filters, "pppoe") : setDropDownToValue(filters, "static");
 
         // Set default date field value (we need to get iso format but want todays local date, so need some work to avoid momentjs import)
         var tzoffset = (new Date()).getTimezoneOffset() * 60000; // offset in milliseconds
@@ -102,6 +106,15 @@ class cnArcherWorkorder extends HTMLElement {
         // Wire-up onChange events
         technician.addEventListener('change', technicianChanged);
         dt.addEventListener('change', dateChanged);
+
+        function setDropDownToValue(s, v) {
+            for ( var i = 0; i < s.options.length; i++ ) {        
+                if ( s.options[i].value == v ) {
+                    s.options[i].selected = true;
+                    return;
+                }
+            }
+        }
 
         // Event for print button clicked on Modal
         function clickPrintBtn() {
@@ -229,6 +242,10 @@ class cnArcherWorkorder extends HTMLElement {
             }
         }
 
+        function isPPPoE(archer) {
+            return archerInfo.vlan == 20 || archerInfo.package.toLowerCase().indexOf("pppoe") > 0
+        }
+
         function generateCanvasImageDataUrl(qrImg, templateLogo) {
             let cv = document.createElement('canvas');
                 cv.width = 1600;
@@ -265,7 +282,7 @@ class cnArcherWorkorder extends HTMLElement {
                 canvasWrap(ctx, archerInfo.address, 190, rowStart + (rowSpacing * 10), 850, rowSpacing);
 
                 // Depending on the vlan show static or pppoe on workorder
-                if (archerInfo.vlan == "20") {
+                if (isPPPoE(archerInfo)) {
                     ctx.fillText("PPPoE", 190, rowStart + (rowSpacing * 12));
                     ctx.fillText(archerInfo.username, 190, rowStart + (rowSpacing * 13));
                     ctx.fillText(archerInfo.password, 760, rowStart + (rowSpacing * 13));

@@ -17,8 +17,12 @@ export function layout(archerInfo, icon) {
             </div>
             <div class="option-info">
                 <div class="entry">Date</div> <input type="date" id="dt" name="datetime" />
-                <div class="entry">Technician</div> 
-                    <select name="technician" id="technician"></select>
+                <div class="entry">Technician</div> <select name="technician" id="technician"></select>
+                <div class="entry">Filters</div> <select name="filters" id="filters">
+                    <option disabled>Select...</option>
+                    <option value="pppoe">PPPoE</option>
+                    <option value="static">Static/CPN</option>
+                </select>
                 <div class="entry-wide">Installation Note</div>
                 <textarea name="notes" id="note"></textarea>
             </div>
