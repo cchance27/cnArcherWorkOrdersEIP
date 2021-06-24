@@ -5,7 +5,7 @@
   "main": "src/app.js",
   "scripts": {
     "build": "npx webpack",
-    "web": "npx webpack-dev-server"
+    "web": "npx webpack serve"
   },
   "private": true,
   "author": "Chris Chance",
@@ -14,14 +14,14 @@
     "qrious": "^4.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.5",
-    "babel-loader": "^8.1.0",
-    "css-loader": "^3.5.1",
-    "file-loader": "^6.0.0",
-    "image-webpack-loader": "^6.0.0",
-    "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.2.6",
+    "file-loader": "^6.2.0",
+    "image-webpack-loader": "^7.0.1",
+    "webpack": "^5.40.0",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^3.11.2"
   }
 }

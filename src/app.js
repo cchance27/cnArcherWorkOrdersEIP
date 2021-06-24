@@ -1,6 +1,6 @@
 import {layout} from './layout';
 import {generateQRDataURL} from './qr';
-import * as style from './cnArcher.css'
+import style from './cnArcher.css'
 import templateLogo from './img/cnArcherLogo.png';
 //import '@webcomponents/webcomponentsjs'; //<--- causes high cpu in edge/ie?
 
