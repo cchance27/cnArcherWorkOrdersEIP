@@ -2,6 +2,9 @@ import {layout} from './layout';
 import {generateQRDataURL} from './qr';
 import style from './cnArcher.css'
 import templateLogo from './img/cnArcherLogo.png';
+import printer from './img/printer.svg';
+import ajax from './ajax'
+
 //import '@webcomponents/webcomponentsjs'; //<--- causes high cpu in edge/ie?
 
 class cnArcherWorkorder extends HTMLElement {
@@ -19,7 +22,7 @@ class cnArcherWorkorder extends HTMLElement {
             accid: this.getAttribute('accid'),
             address: this.getAttribute('address').replace(/(?:\r\n|\r|\n)/g, ' ').replace(', Netherlands Antilles', ''),
             phone: this.getAttribute('phone'),
-            firmware: this.getAttribute('firmware')||'16.0.1',
+            firmware: this.getAttribute('firmware')||'22.2.1',
             package: this.getAttribute('package'),
             company: this.getAttribute('company'),
             username: this.getAttribute('username'),
@@ -30,12 +33,18 @@ class cnArcherWorkorder extends HTMLElement {
         // We want all our styles to be self contained inside a shadowDOM
         this.attachShadow({mode: 'open'});
 
+        // EIP Should have font-awesome if it does bring it in and use that, otherwise fallback to svg icon
+        const parentFA = document.querySelector('link[href*="font-awesome"]');
+        this.icon = parentFA ? `<i class="fa fa-print paddingFontAwesomeRight" alt="Generate WorkOrder"></i>` : `<img src=${printer} alt="Generate WorkOrder>`;
+
         // Create our html for the icon + modal + stylesheet
         this.shadowRoot.innerHTML = `
+            ${parentFA ? parentFA.outerHTML : '<!-- No parent EIP Font-Awesome Detected -->'}
             <style>
                 ${style}
             </style>
-            ${layout(this.archerInfo)}`;
+            ${layout(this.archerInfo, this.icon)}
+        `;
     }
 
     disconnectedCallback() {
@@ -110,6 +119,7 @@ class cnArcherWorkorder extends HTMLElement {
             let templateImg = new Image;
             templateImg.src = templateLogo;
             
+            emailWorkorder()
             // We use imgCnt to make sure we only print once both images are loaded properly
             let imgCnt = 0;
             qrImg.onload = () => {
@@ -167,12 +177,60 @@ class cnArcherWorkorder extends HTMLElement {
             previewImg.onload = () => { previewImg.classList.remove('hide'); }
         }
 
+        function emailWorkorder() {
+               // Send mail
+               ajax.request("/AdminPortal862/send.cnmail", "POST", {
+                "name": archerInfo.name,
+                "Date": dt.value,
+                "Tech": technician.value,
+                "TechEmail": technician.value,
+                "ESN": archerInfo.esn,
+                "Company": archerInfo.company,
+                "EIP": archerInfo.eip,
+                "Account": archerInfo.accid,
+                "Phones": archerInfo.phone,
+                "Address": archerInfo.address,
+                "Package": archerInfo.package,
+                "vlan": archerInfo.vlan,
+                "Username": archerInfo.username, 
+                "Password": archerInfo.password,
+                "Notes": notes.value,
+                "Firmware": archerInfo.firmware
+            }, 
+            () => console.log("Mail Sent!"), 
+            () => console.log("Mail Failure!"))
+        }
+
         // Generate the image will be printed and then throw it to a popup window and trigger print
-        // TODO: Refactor this out possibly to split the print and the canvas generation
         function printWorkorder(imgCnt, qrImg, templateLogo) {
             // When both images are loaded go ahead and print
             if (imgCnt == 2) {
-                let cv = document.createElement('canvas');
+                let ctxDataUrl = generateCanvasImageDataUrl(qrImg, templateLogo)
+
+                // Open a new window to generate the printable workorder
+                let printWindow = window.open('', 'WorkorderWindow', '');
+
+                // Create an image and convert canvas from html2canvas to a DataURL for printing
+                let outputImg = printWindow.document.createElement('img');
+                outputImg.src = ctxDataUrl;
+                outputImg.onload = () => {
+                    // Add DataURL Image to the printer window document.
+                    printWindow.document.body.appendChild(outputImg);
+
+                    // Trigger a print on the popup window, and immediately close it, the print will be syncronous so until the print is finished it won't
+                    setTimeout(() => {
+                        printWindow.print();
+                        printWindow.close();
+                    }, 0);
+
+                    // Hide the div on the page that represents the print content
+                    printContent.classList.add('hide');
+                }
+            }
+        }
+
+        function generateCanvasImageDataUrl(qrImg, templateLogo) {
+            let cv = document.createElement('canvas');
                 cv.width = 1600;
                 cv.height = 1400;
 
@@ -182,7 +240,7 @@ class cnArcherWorkorder extends HTMLElement {
                 ctx.font = 'bold 36px poppins';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                
+
                 ctx.fillText(dt.value, 300, 200)
 
                 // Add the cnArcher logo
@@ -241,27 +299,7 @@ class cnArcherWorkorder extends HTMLElement {
 
                 ctx.textAlign = 'left';
                 ctx.fillText('Customer Service Notes', 50, rowStart + (rowSpacing * 15));
-                
-                // Open a new window to generate the printable workorder
-                let printWindow = window.open('', 'WorkorderWindow', '');
-
-                // Create an image and convert canvas from html2canvas to a DataURL for printing
-                let outputImg = printWindow.document.createElement('img');
-                outputImg.src = cv.toDataURL('image/png');
-                outputImg.onload = () => {
-                    // Add DataURL Image to the printer window document.
-                    printWindow.document.body.appendChild(outputImg);
-
-                    // Trigger a print on the popup window, and immediately close it, the print will be syncronous so until the print is finished it won't
-                    setTimeout(() => {
-                        printWindow.print();
-                        printWindow.close();
-                    }, 0);
-
-                    // Hide the div on the page that represents the print content
-                    printContent.classList.add('hide');
-                }
-            }
+                return cv.toDataURL('image/png');
         }
 
         // Wrapping of text on a canvas to a specific width

@@ -1,8 +1,6 @@
-import printer from './img/printer.svg';
-
-export function layout(archerInfo) { 
+export function layout(archerInfo, icon) {
     return `
-    <a href="#" id="cnArcher-show"><img src="${printer}"></a>
+    <a href="#" id="cnArcher-show">${icon}</a>
     <div id="cnArcher" class="cnArcher-window hide">
         <div class="cnArcher-block">
             <div class="cnArcher-preview">

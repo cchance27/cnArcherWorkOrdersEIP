@@ -42,12 +42,12 @@ module.exports = {
   resolve: { extensions: ["*", ".js"] },
   output: {
     path: path.resolve(__dirname, 'dist/'),
-    publicPath: '/AdminPortal/cnArcher/',
+    publicPath: '/AdminPortal862/cnArcher/',
     filename: 'bundle.js',
   },
   devServer: {
     contentBase: path.join(__dirname, "/static/"),
     port: 3000,
-    publicPath: "/AdminPortal/cnArcher/",
+    publicPath: "/AdminPortal862/cnArcher/",
   },
 }
