@@ -152,7 +152,7 @@
     font-weight: 600;
 }
 
-input, select {
+.widebox {
     font-size: 12px;
     width: 130px;
     height: 25px;
@@ -175,7 +175,7 @@ input, select {
 
 .option-info textarea {
     width: 212px;
-    height: 75px;
+    height: 55px;
     border: 0;
     outline: 0;
     border-radius: 10px;
@@ -188,6 +188,33 @@ input, select {
     0 1px 0 rgba(255,255,255,.15),
     0 2px 4px rgba(0,0,0,.2),
     0 0 12px rgba(255,255,255,.1)
+}
+
+.check-options {
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.check-options input{
+    width: 15px;
+    height: 15px;
+    vertical-align: bottom;
+    padding: 0;
+    margin: 0 0 1px 4px;
+}
+
+.check-options div {
+    flex: 1;
+}
+
+.black-link {
+    color: black;
+}
+
+.black-link:is(:hover, :visited) {
+    color: black;
 }
 
 .print-workorder {

@@ -4,6 +4,7 @@ import style from './cnArcher.css'
 import templateLogo from './img/cnArcherLogo.png';
 import printer from './img/printer.svg';
 import ajax from './ajax'
+import { isPPPoE } from './tools'
 
 //import '@webcomponents/webcomponentsjs'; //<--- causes high cpu in edge/ie?
 
@@ -35,14 +36,12 @@ class cnArcherWorkorder extends HTMLElement {
 
         // EIP Should have font-awesome if it does bring it in and use that, otherwise fallback to svg icon
         const parentFA = document.querySelector('link[href*="font-awesome"]');
-        this.icon = parentFA ? `<i class="fa fa-print paddingFontAwesomeRight" alt="Generate WorkOrder"></i>` : `<img src=${printer} alt="Generate WorkOrder>`;
+        this.icon = parentFA ? `<i class="fa fa-external-link-square" alt="Generate WorkOrder"></i>` : `<img src=${printer} alt="Generate WorkOrder>`;
 
         // Create our html for the icon + modal + stylesheet
         this.shadowRoot.innerHTML = `
             ${parentFA ? parentFA.outerHTML : '<!-- No parent EIP Font-Awesome Detected -->'}
-            <style>
-                ${style}
-            </style>
+            <style>${style}</style>
             ${layout(this.archerInfo, this.icon)}
         `;
     }
@@ -53,12 +52,16 @@ class cnArcherWorkorder extends HTMLElement {
         const printBtn = this.shadowRoot.querySelector('.print-workorder');
         const dt = this.shadowRoot.querySelector('#dt');
         const technician = this.shadowRoot.querySelector('#technician');
+        const chkMail = this.shadowRoot.querySelector('#print');
+        const chkPrint = this.shadowRoot.querySelector('#mail');
 
         showBtn.removeEventListener('click');
         archerWindow.removeEventListener('click');
         printBtn.removeEventListener('click');
         dt.removeEventListener('change');
         technician.removeEventListener('change');
+        chkPrint.removeEventListener('click');
+        chkMail.removeEventListener('click');
     }
 
     connectedCallback() {
@@ -72,6 +75,21 @@ class cnArcherWorkorder extends HTMLElement {
         const technician = this.shadowRoot.querySelector('#technician');
         const printContent = this.shadowRoot.querySelector('#cnArcherPrintArea');
         const previewImg = this.shadowRoot.querySelector('#previewImg');
+        const chkMail = this.shadowRoot.querySelector('#mail');
+        const chkPrint = this.shadowRoot.querySelector('#print');
+
+        // Checkbox options
+        chkMail.addEventListener('click', changeChecks)
+        chkPrint.addEventListener('click', changeChecks)
+
+        changeChecks()
+
+        function changeChecks() {
+            if (chkMail.checked && chkPrint.checked) { printBtn.textContent = "Print & Send"; printBtn.disabled = false; }
+            if (!chkMail.checked && chkPrint.checked) { printBtn.textContent = "Print Workorder"; printBtn.disabled = false; }
+            if (chkMail.checked && !chkPrint.checked) { printBtn.textContent = "Mail Workorder"; printBtn.disabled = false; }
+            if (!chkMail.checked && !chkPrint.checked) { printBtn.textContent = "Disabled"; printBtn.disabled = true; }
+        }
 
         // create a local link to the archerInfo so that we don't have to 
         const archerInfo = this.archerInfo;
@@ -120,28 +138,33 @@ class cnArcherWorkorder extends HTMLElement {
         function clickPrintBtn() {
             // Check if either of our fields are invalid
             if (!validDate() || !validTech()) return;
-
-            // Display our print able div area
-            printContent.classList.remove('hide');
             
-            // Generate a qr QR Code and copy it to the printable workorder
-            let qrImg = new Image;
-            qrImg.src = generateQRDataURL(archerInfo, dt.value, technician.value);
-
-            // Load our logo to put into the template output
-            let templateImg = new Image;
-            templateImg.src = templateLogo;
-            
-            emailWorkorder()
-            // We use imgCnt to make sure we only print once both images are loaded properly
-            let imgCnt = 0;
-            qrImg.onload = () => {
-                imgCnt++;
-                printWorkorder(imgCnt, qrImg, templateImg);
+            if (chkMail.checked) {
+                emailWorkorder()
             }
-            templateImg.onload = () => {
-                imgCnt++;
-                printWorkorder(imgCnt, qrImg, templateImg);
+
+            if (chkPrint.checked) {
+                // Display our print able div area
+                printContent.classList.remove('hide');
+                
+                // Generate a qr QR Code and copy it to the printable workorder
+                let qrImg = new Image;
+                qrImg.src = generateQRDataURL(archerInfo, dt.value, technician.value);
+
+                // Load our logo to put into the template output
+                let templateImg = new Image;
+                templateImg.src = templateLogo;
+
+                // We use imgCnt to make sure we only print once both images are loaded properly
+                let imgCnt = 0;
+                qrImg.onload = () => {
+                    imgCnt++;
+                    printWorkorder(imgCnt, qrImg, templateImg);
+                }
+                templateImg.onload = () => {
+                    imgCnt++;
+                    printWorkorder(imgCnt, qrImg, templateImg);
+                }
             }
         }
 
@@ -210,8 +233,16 @@ class cnArcherWorkorder extends HTMLElement {
                 "Notes": notes.value,
                 "Firmware": archerInfo.firmware
             }, 
-            () => console.log("Mail Sent!"), 
-            () => console.log("Mail Failure!"))
+            () => {
+                console.log("Mail Sent!");
+                printBtn.textContent = "Mail Sent!";
+                printBtn.disabled = true;
+            }, 
+            () => {
+                console.log("Mail Failure!")
+                printBtn.textContent = "Mail Failure!";
+                printBtn.disabled = true;
+            })
         }
 
         // Generate the image will be printed and then throw it to a popup window and trigger print
@@ -240,10 +271,6 @@ class cnArcherWorkorder extends HTMLElement {
                     printContent.classList.add('hide');
                 }
             }
-        }
-
-        function isPPPoE(archer) {
-            return archerInfo.vlan == 20 || archerInfo.package.toLowerCase().indexOf("pppoe") > 0
         }
 
         function generateCanvasImageDataUrl(qrImg, templateLogo) {
@@ -347,7 +374,10 @@ class cnArcherWorkorder extends HTMLElement {
         }
 
         // Open Button onClick Event: Show the archer modal
-        function showArcher() { archerWindow.classList.remove('hide'); }
+        function showArcher() { 
+            archerWindow.classList.remove('hide'); 
+            changeChecks();
+        }
     }
 }
 
