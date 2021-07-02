@@ -45,7 +45,7 @@ function qrContent(archerInfo, installDate, technician) {
     "ip_setting": "dhcp",
     "comments": "Install ${installDate} by ${technician}", 
     "firmware": "${archerInfo.firmware}",
-    "staging_config": ${isPPPoE(archerInfo) ? JSON.stringify(stagingPPPoE()) : JSON.stringify(stagingStatic())}
+    "staging_config": ${isPPPoE(archerInfo) ? JSON.stringify(stagingPPPoE()) : JSON.stringify(JSON.stringify(stagingStatic()))}
   }`;
 }
 
